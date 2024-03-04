@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: multitool-svc-hw4-nodeport
+spec:
+  selector:
+    app: multitool-hw4
+  ports:
+    - name: nginx
+      port: 80
+      targetPort: nginx-port
+      nodePort: 31032
+  type: NodePort 

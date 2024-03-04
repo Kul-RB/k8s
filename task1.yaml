@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multitool-hw4
+  labels:
+    app: multitool-hw4
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: multitool-hw4
+  template:
+    metadata:
+      labels:
+        app: multitool-hw4
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: multitool-port
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+          name: nginx-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multitool-hw4-svc
+spec:
+  selector:
+    app: multitool-hw4
+  ports:
+    - name: nginx
+      protocol: TCP
+      port: 9001
+      targetPort: nginx-port 
+    - name: multitool
+      protocol: TCP
+      port: 9002
+      targetPort: multitool-port
+
