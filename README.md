@@ -18,7 +18,8 @@
 
 5.1 ![image](https://github.com/Kul-RB/k8s/assets/53901269/736fb368-9838-4fd8-9159-6a27ce046387)
 
-5.2 ![image](https://github.com/Kul-RB/k8s/assets/53901269/9f9fcf4e-1729-4363-bf9f-3b1f35752b34)
+5.2 ![image](https://github.com/Kul-RB/k8s/assets/53901269/418e4759-5ad3-4a72-8075-35268ddd0700)
+
 
 # Задание
 1. Создать Deployment приложения nginx и обеспечить старт контейнера только после того, как будет запущен сервис этого приложения.
