@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-dep
+  labels:
+    app: volume-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: volume-dep
+  template:
+    metadata:
+      labels:
+        app: volume-dep
+    spec:
+      containers:
+        - name: busybox
+          image: busybox:1.28
+          command: ['sh', '-c', "while(true); do echo 'new log'>>/mnt/share/log.txt; sleep 5; done"]
+          volumeMounts:
+          - mountPath: /mnt/share
+            name: share
+        - name: multitool
+          image: wbitt/network-multitool
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - mountPath: /mnt/share      
+            name: share
+      volumes:
+      - name: share
+        emptyDir:
+          sizeLimit: 10Mi
