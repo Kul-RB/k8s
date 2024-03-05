@@ -23,19 +23,9 @@ spec:
           value: "1180"
         ports:
         - containerPort: 1180
+          name: multitool-port
       - name: nginx
         image: nginx:latest
         ports:
         - containerPort: 80
-        volumeMounts:
-          - name: nginx-conf
-            mountPath: /etc/nginx/nginx.conf
-            subPath: nginx.conf
-            readOnly: true
-      volumes:
-      - name: nginx-conf
-        configMap:
-          name: nginx-conf
-          items:
-            - key: nginx.conf
-              path: nginx.conf
+          name: nginx-port
