@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-for-nginx
+data:
+  index.properties: |
+    <html>
+      <head>
+        <title>Netology</title>
+      </head>
+      <body>
+        <p>This is an example paragraph. Anything in the <strong>body</strong> tag will appear on the page, just like this <strong>p</strong> tag and its contents.</p>
+      </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-with-secret
+  labels:
+    app: dep-with-secret
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-with-secret
+  template:
+    metadata:
+      labels:
+        app: dep-with-secret
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          volumeMounts:
+          - name: config
+            mountPath: /usr/share/nginx/html
+            readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config-for-nginx
+          items:
+          - key: "index.properties"
+            path: "index.html"
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: dep-with-secrete-svc
+spec:
+ selector:
+   app: dep-with-secret
+ ports:
+ - protocol: TCP
+   port: 80
+   targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-for-dep
+spec:
+  ingressClassName: public
+  tls:
+  - hosts:
+    - 192.168.30.38
+    secretName: nginx
+  rules:
+  - http:
+     paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: dep-with-secrete-svc
+            port:
+              number: 80
