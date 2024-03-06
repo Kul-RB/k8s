@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nfs
+spec:
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: 'nfs'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamic-pv
+  labels:
+    app: dynamic-pv
+spec:
+  selector:
+    matchLabels:
+      name: dynamic-pv
+  template:
+    metadata:
+      labels: 
+        name: dynamic-pv
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+        - name: nfs
+          mountPath: /mnt/nfs-storage
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: pvc-nfs
