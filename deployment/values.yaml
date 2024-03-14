@@ -1,0 +1,11 @@
+replicaCount: 3
+image: nginx:1.25
+
+application:
+  name: nginx
+  selector: nginx
+  container:
+    port: 80
+  svc:
+    name: nginx-svc
+    type: ClusterIP
