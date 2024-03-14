@@ -16,12 +16,10 @@ spec:
             name: frontend-svc
             port:
               number: 80
-  - http:
-     paths:
-     - path: /api
-       pathType: Prefix
-       backend:
-         service:
-           name: backend-svc
-           port: 
-             number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-svc
+            port: 
+              number: 80
