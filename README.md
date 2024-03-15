@@ -32,11 +32,18 @@
 # Решение
 Используется kubespray
 
-3 control-plane ноды
+1 Loadbalancer HAproxy для доступа к api-server (Внешний)
+
+![image](https://github.com/Kul-RB/k8s/assets/53901269/a1dbce1d-7c06-421a-94e4-cba85a76e835)
+
+![image](https://github.com/Kul-RB/k8s/assets/53901269/c9b2fdb1-d923-463a-b8c3-57878b793f54)
+
+
+3 controle-plane ноды
 3 worker ноды
 3 etcd ноды отдельно
 
-![image](https://github.com/Kul-RB/k8s/assets/53901269/846f0ea7-34be-426a-8068-9093d8842b9a)
+![image](https://github.com/Kul-RB/k8s/assets/53901269/84347f5c-44c1-4b04-b105-312a1f9ec721)
 
 ![image](https://github.com/Kul-RB/k8s/assets/53901269/cc7decf6-07ce-46be-9ff3-faa6422abdc4)
 
@@ -44,3 +51,6 @@ CNI: Calico
 
 ![image](https://github.com/Kul-RB/k8s/assets/53901269/28259512-df32-445e-939a-8583e47862b8)
 
+kubectl get nodes
+
+![image](https://github.com/Kul-RB/k8s/assets/53901269/411b148b-d99e-43e9-83ab-03580c79c5ee)
