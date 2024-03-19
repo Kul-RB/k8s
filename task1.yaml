@@ -1,0 +1,216 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app
+  labels:
+    name: app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: app
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: wbitt/network-multitool
+        ports:
+        - containerPort: 80
+          name: frontend-port
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: frontend-svc
+  namespace: app
+spec:
+  selector:
+    app: frontend
+  ports:
+    - name: frontend-port
+      protocol: TCP
+      port: 80
+      targetPort: frontend-port
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: front-np
+  namespace: app
+spec:
+  podSelector:
+    matchLabels:
+      app: frontend
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: backend
+      namespaceSelector:
+        matchLabels:
+          name: app
+    ports:
+    - protocol: TCP
+      port: 80
+  - to:              
+    ports:            
+    - protocol: UDP   
+      port: 53 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: app
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: wbitt/network-multitool
+        ports:
+        - containerPort: 80
+          name: backend-port
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: backend-svc
+  namespace: app
+spec:
+  selector:
+    app: backend
+  ports:
+    - name: backend-port
+      protocol: TCP
+      port: 80
+      targetPort: backend-port
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: back-np
+  namespace: app
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+      namespaceSelector:
+        matchLabels:
+          name: app
+    ports:
+    - protocol: TCP
+      port: 80  
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cache
+      namespaceSelector:
+        matchLabels:
+          name: app
+    ports:
+    - protocol: TCP
+      port: 80
+  - to:              
+    ports:            
+    - protocol: UDP   
+      port: 53 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache
+  namespace: app
+  labels:
+    app: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+      - name: cache
+        image: wbitt/network-multitool
+        ports:
+        - containerPort: 80
+          name: cache-port
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: cache-svc
+  namespace: app
+spec:
+  selector:
+    app: cache
+  ports:
+    - name: cache-port
+      protocol: TCP
+      port: 80
+      targetPort: cache-port
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cache-np
+  namespace: app
+spec:
+  podSelector:
+    matchLabels:
+      app: cache
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: backend
+      namespaceSelector:
+        matchLabels:
+          name: app
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to:              
+    ports:            
+    - protocol: UDP   
+      port: 53 
