@@ -36,4 +36,13 @@
 2. При помощи разных ConfigMap сделать две версии приложения — веб-страницы.
 3. С помощью ingress создать канареечный деплоймент, чтобы можно было часть трафика перебросить на разные версии приложения.
 
-№
+# Решение
+1. ![image](https://github.com/Kul-RB/k8s/assets/53901269/a5b2fc40-99b1-4b37-849f-8d4f3418aca2)
+
+## v1
+![image](https://github.com/Kul-RB/k8s/assets/53901269/17810482-81dd-4de6-a015-aeaa233acc56)
+
+## v2
+![image](https://github.com/Kul-RB/k8s/assets/53901269/d78781cb-ee25-4917-8f8d-9091d5c285b7)
+
+4. ![image](https://github.com/Kul-RB/k8s/assets/53901269/667831cc-5c32-419b-a3a1-d8ddab036600)
