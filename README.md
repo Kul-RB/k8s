@@ -30,6 +30,10 @@ ReclaimPolicy Retain позволяет восстанавливать ресу�
 # Решение
 1. ![image](https://github.com/Kul-RB/k8s/assets/53901269/31ee4591-105c-40ca-91c1-ea2dc04d0b34)
 
+В MicroK8s StorageClass устанавливается автоматически с провиженером  cluster.local/nfs-server-provisioner:
+
+![image](https://github.com/Kul-RB/k8s/assets/53901269/6d673853-e48f-4bcf-b211-f4f60ac64805)
+
 
 2. ![image](https://github.com/Kul-RB/k8s/assets/53901269/d646ecf6-d891-4ecc-a485-e477390b9361)
 
